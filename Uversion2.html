@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Regalo a mi werita</title>
+
+<style>
+:root {
+  --panel: rgba(255, 248, 235, 0.85);
+  --text: #4a4a4a;
+  --accent-pink: #ff5f7a;
+  --accent-purple: #7a4cff;
+  --accent-orange: #ffb36b;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Courier New', monospace;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--accent-orange), var(--accent-pink), var(--accent-purple));
+}
+
+/* --- PANTALLA DE INICIO --- */
+#intro-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, var(--accent-orange), var(--accent-pink), var(--accent-purple));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  transition: opacity 1.5s ease;
+}
+
+.romantic-btn {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
+  font-size: 1.5rem;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  padding: 20px 50px;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(255, 95, 122, 0.3);
+  animation: heartbeat 1.5s infinite;
+  transition: all 0.3s ease;
+}
+
+.romantic-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+  box-shadow: 0 15px 40px rgba(255, 255, 255, 0.5);
+  border-color: #fff;
+}
+
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  14% { transform: scale(1.08); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.08); }
+  70% { transform: scale(1); }
+}
+
+/* --- CONTENEDOR PRINCIPAL --- */
+.container {
+  display: flex;
+  width: 92%;
+  max-width: 1100px;
+  height: 82vh;
+  background: var(--panel);
+  backdrop-filter: blur(12px);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.container.active {
+  animation: fadeIn 1.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; transform: scale(1); }
+}
+
+.text-section {
+  flex: 1;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.typewriter-text {
+  font-size: 1.2rem;
+  line-height: 1.3;
+  color: var(--text);
+  min-height: 50px;
+}
+
+.timer-section {
+  margin-top: 20px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 1.2s ease;
+}
+
+.timer-section.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.timer-title {
+  font-size: 1.1rem;
+  color: var(--text);
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+#timer {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.time-block {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 95, 122, 0.2);
+  border-radius: 16px;
+  padding: 12px 15px;
+  text-align: center;
+  min-width: 75px;
+  box-shadow: 0 8px 20px rgba(255, 95, 122, 0.1);
+}
+
+.time-block span {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--accent-pink);
+  font-family: 'Arial', sans-serif;
+}
+
+.time-block small {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--accent-purple);
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.canvas-section {
+  width: 520px;
+  position: relative;
+  background: rgba(0,0,0,0.02);
+}
+
+canvas {
+  position: absolute;
+  inset: 0;
+}
+
+/* --- AJUSTES PARA CELULAR --- */
+@media (max-width: 768px) {
+  body {
+    overflow-y: auto; 
+    align-items: flex-start;
+    padding: 20px 0;
+  }
+
+  .container {
+    flex-direction: column; 
+    height: auto;
+    width: 95%;
+    max-width: 400px;
+    margin: auto;
+  }
+
+  .text-section {
+    padding: 30px 20px;
+    text-align: center;
+  }
+
+  .typewriter-text {
+    font-size: 1rem;
+    min-height: 150px; 
+  }
+
+  #timer {
+    justify-content: center;
+  }
+
+  .time-block {
+    min-width: 65px;
+    padding: 8px;
+  }
+
+  .time-block span {
+    font-size: 1.4rem;
+  }
+
+  .canvas-section {
+    width: 100%;
+    height: 350px; 
+    overflow: hidden;
+    position: relative; /* Aseguramos que el padre sea relativo */
+  }
+
+  canvas {
+    /* Aquí está la magia del centrado perfecto */
+    left: 50%;
+    transform: translateX(-50%) scale(0.7); 
+    transform-origin: top center;
+  }
+  
+  .romantic-btn {
+    font-size: 1.1rem;
+    padding: 15px 30px;
+    width: 80%;
+  }
+}
+</style>
+</head>
+<body>
+
+<div id="intro-screen">
+  <button id="start-btn" class="romantic-btn">
+    Para ti, mi Werita 💛✨
+  </button>
+</div>
+
+<div class="container">
+  <div class="text-section">
+    <div id="text-container" class="typewriter-text"></div>
+    <div id="timer-container" class="timer-section">
+      <div class="timer-title">Mi amor por ti comenzó hace...</div>
+      <div id="timer"></div>
+    </div>
+  </div>
+
+  <div class="canvas-section">
+    <canvas id="treeCanvas" width="520" height="520"></canvas>
+    <canvas id="fallingCanvas" width="520" height="520"></canvas>
+  </div>
+</div>
+
+<script>
+/* --- CONFIGURACIÓN DE TEXTO --- */
+const lines=[
+  "Flores amarillas para mi Werita ❤️:",
+  "",
+  "Si pudiera volver a nacer",
+  "te elegiría, cada vez ❤️.",
+  "",
+  "Cuanto más tiempo estoy",
+  "contigo más te amo ❤️.",
+  "",
+  "I Love You ❤️ Jessica",
+  "Tu loco enamorado ❤️."
+];
+
+let l=0, c=0;
+const textEl=document.getElementById("text-container");
+
+function typeWriter(){
+  if(l < lines.length){
+    if(c < lines[l].length){
+      textEl.innerHTML += lines[l][c++];
+      setTimeout(typeWriter, 40);
+    } else {
+      textEl.innerHTML += "<br>";
+      l++; c=0;
+      setTimeout(typeWriter, 180);
+    }
+  } else {
+    startTimer();
+    startScene();
+  }
+}
+
+/* --- TIMER --- */
+const startDate = new Date("2024-05-28 00:00:00"); 
+
+function updateTimer(){
+  const now = new Date();
+  const diff = now - startDate;
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor(diff / 3600000) % 24;
+  const m = Math.floor(diff / 60000) % 60;
+  const s = Math.floor(diff / 1000) % 60;
+  const format = (num) => String(num).padStart(2, '0');
+
+  document.getElementById("timer").innerHTML = `
+    <div class="time-block"><span>${d}</span><small>Días</small></div>
+    <div class="time-block"><span>${format(h)}</span><small>Hrs</small></div>
+    <div class="time-block"><span>${format(m)}</span><small>Min</small></div>
+    <div class="time-block"><span>${format(s)}</span><small>Seg</small></div>
+  `;
+}
+
+function startTimer(){
+  document.getElementById("timer-container").classList.add("show");
+  setInterval(updateTimer, 1000);
+  updateTimer();
+}
+
+/* --- CORE CANVAS --- */
+const canvas = document.getElementById("treeCanvas");
+const ctx = canvas.getContext("2d");
+const fallCanvas = document.getElementById("fallingCanvas");
+const fallCtx = fallCanvas.getContext("2d");
+
+let flowers = [];
+let queue = [];
+let bgAlpha = 0;
+
+/* --- FUNCIONES DE DIBUJO HIPERREALISTA --- */
+const petalShapes = [
+    [{x:0, y:-1}, {x:0.5, y:-0.8}, {x:1, y:-0.2}, {x:0.8, y:0.5}, {x:0, y:1}, {x:-0.8, y:0.5}, {x:-1, y:-0.2}, {x:-0.5, y:-0.8}],
+    [{x:0, y:-1.2}, {x:0.4, y:-0.9}, {x:0.6, y:0}, {x:0.4, y:0.9}, {x:0, y:1.2}, {x:-0.4, y:0.9}, {x:-0.6, y:0}, {x:-0.4, y:-0.9}],
+    [{x:0, y:-0.8}, {x:0.3, y:-1}, {x:0.7, y:-0.7}, {x:1, y:0}, {x:0.8, y:0.8}, {x:0, y:1.1}, {x:-0.8, y:0.8}, {x:-1, y:0}, {x:-0.7, y:-0.7}, {x:-0.3, y:-1}]
+];
+
+function shadeColor(color, percent) {
+    let f = parseInt(color.slice(1), 16), t = percent < 1 ? 0 : 255, p = percent < 1 ? 1 - percent : percent - 1;
+    let R = f >> 16, G = f >> 8 & 0x00FF, B = f & 0x0000FF;
+    return "#" + (0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 + (Math.round((t - G) * p) + G) * 0x100 + (Math.round((t - B) * p) + B)).toString(16).slice(1);
+}
+
+function drawRealPetal(pCtx, shape, size, colorBase, angleX, angleY) {
+    pCtx.beginPath();
+    const scaleX = Math.cos(angleX);
+    const scaleY = Math.cos(angleY);
+    const brightness = 1 + (Math.sin(angleX) * Math.sin(angleY)) * 0.3;
+    pCtx.fillStyle = shadeColor(colorBase, brightness);
+    shape.forEach((point, index) => {
+        const finalX = point.x * size * scaleX;
+        const finalY = point.y * size * scaleY;
+        if (index === 0) pCtx.moveTo(finalX, finalY);
+        else pCtx.lineTo(finalX, finalY);
+    });
+    pCtx.closePath();
+    pCtx.fill();
+}
+
+/* --- ANIMACIONES DEL ESCENARIO --- */
+function drawBackground(){
+  const g = ctx.createLinearGradient(0, 0, 0, 520);
+  g.addColorStop(0, "#ffcf7a");
+  g.addColorStop(.4, "#ff6b74");
+  g.addColorStop(1, "#6b4bff");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 520, 520);
+  ctx.beginPath();
+  ctx.arc(260, 90, 40, 0, Math.PI * 2);
+  ctx.fillStyle = "#fff3b0";
+  ctx.shadowColor = "#fff3b0";
+  ctx.shadowBlur = 20;
+  ctx.fill();
+  ctx.shadowBlur = 0; 
+}
+
+function animateBG(){
+  bgAlpha += 0.02;
+  ctx.globalAlpha = bgAlpha;
+  drawBackground();
+  ctx.globalAlpha = 1;
+  if(bgAlpha < 1) requestAnimationFrame(animateBG);
+  else animateGround();
+}
+
+function animateGround(){
+  let groundProgress = 0;
+  function draw(){
+    groundProgress += 0.02;
+    ctx.beginPath();
+    ctx.moveTo(0, 455);
+    for(let x = 0; x < 520 * groundProgress; x++){
+      ctx.lineTo(x, 455 + Math.sin(x * 0.02) * 10);
+    }
+    ctx.lineTo(520 * groundProgress, 520);
+    ctx.lineTo(0, 520);
+    ctx.fillStyle = "#d2b48c";
+    ctx.fill();
+    if(groundProgress < 1) requestAnimationFrame(draw);
+    else startTree();
+  }
+  draw();
+}
+
+function branch(x, y, len, angle, w){
+  queue.push({x, y, len, angle, w});
+}
+
+function grow(){
+  if(!queue.length){
+    generateHeart();
+    drawFlowers();
+    return;
+  }
+  const b = queue.shift();
+  const nx = b.x - Math.sin(b.angle * Math.PI / 180) * b.len;
+  const ny = b.y - Math.cos(b.angle * Math.PI / 180) * b.len;
+  ctx.beginPath();
+  ctx.moveTo(b.x, b.y);
+  ctx.lineTo(nx, ny);
+  ctx.strokeStyle = "#5c4033";
+  ctx.lineWidth = b.w;
+  ctx.lineCap = "round";
+  ctx.stroke();
+  if(b.len > 10){
+    branch(nx, ny, b.len * .75, b.angle + 20, b.w * .7);
+    branch(nx, ny, b.len * .75, b.angle - 20, b.w * .7);
+  }
+  setTimeout(grow, 20);
+}
+
+function startTree(){
+  branch(260, 455, 100, 0, 10);
+  grow();
+}
+
+function generateHeart(){
+
+  const cx = 260, cy = 220;
+  flowers = [];
+
+  while(flowers.length < 2000){
+    let x = (Math.random() - 0.5) * 3;
+    let y = (Math.random() - 0.5) * 3;
+    let mathY = -y;
+    let eq = Math.pow(x*x + mathY*mathY - 1, 3) - x*x*Math.pow(mathY, 3);
+    if(eq <= 0){
+      flowers.push({
+        x: cx + x * 220,
+        y: cy + y * 160,
+        s: 2 + Math.random() * 2
+      });
+    }
+  }
+}
+
+
+
+/* FLORES ANIMADAS */
+function drawFlowers(){
+  flowers.forEach((f, i) => {
+    setTimeout(() => {
+      let scale = 0;
+      function anim(){
+        scale += 0.15;
+        ctx.save();
+        ctx.globalAlpha = scale;
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.s * scale, 0, Math.PI * 2);
+        ctx.fillStyle = "#FFD700";
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.s * .4 * scale, 0, Math.PI * 2);
+        ctx.fillStyle = "#8B4513";
+        ctx.fill();
+        ctx.restore();
+        if(scale < 1) requestAnimationFrame(anim);
+
+      }
+        anim();
+    }, i * 2);
+  });
+  setTimeout(startFalling, 4000);
+
+}
+
+/* --- SISTEMA DE PÉTALOS CAYENDO --- */
+let falling = [];
+
+function fallLoop() {
+  fallCtx.clearRect(0, 0, 520, 520);
+  if (falling.length < 50 && Math.random() < 0.1) {
+    falling.push({
+      x: Math.random() * 520,
+      y: -20,
+      size: 5 + Math.random() * 5,
+      vy: 0.6 + Math.random() * 0.8,
+      vx: (Math.random() - 0.5) * 0.5,
+      drag: 0.97 + Math.random() * 0.02,
+      angleX: Math.random() * Math.PI * 2,
+      angleY: Math.random() * Math.PI * 2,
+      spinX: (Math.random() - 0.5) * 0.05,
+      spinY: (Math.random() - 0.5) * 0.05,
+      shape: petalShapes[Math.floor(Math.random() * petalShapes.length)],
+      color: (Math.random() < 0.5) ? "#FFD700" : "#FFE135"
+    });
+  }
+  falling.forEach((p, i) => {
+    p.vx *= p.drag;
+    p.vx += Math.sin(p.angleY) * 0.08;
+    p.x += p.vx;
+    p.y += p.vy;
+    p.angleX += p.spinX;
+    p.angleY += p.spinY;
+    fallCtx.save();
+    fallCtx.translate(p.x, p.y);
+    drawRealPetal(fallCtx, p.shape, p.size, p.color, p.angleX, p.angleY);
+    fallCtx.restore();
+    if (p.y > 540) falling.splice(i, 1);
+  });
+  requestAnimationFrame(fallLoop);
+}
+
+function startFalling(){
+  fallLoop();
+}
+
+function startScene(){
+  animateBG();
+}
+
+/* --- LÓGICA DEL BOTÓN DE INICIO --- */
+const introScreen = document.getElementById("intro-screen");
+const startBtn = document.getElementById("start-btn");
+const mainContainer = document.querySelector(".container");
+
+startBtn.addEventListener("click", () => {
+  introScreen.style.opacity = "0";
+  mainContainer.classList.add("active");
+
+  setTimeout(() => {
+    introScreen.style.display = "none";
+    typeWriter();
+  }, 1500);
+});
+
+</script>
+</body>
+</html>
